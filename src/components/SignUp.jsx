@@ -5,6 +5,7 @@ import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +42,9 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await axios.post('https://leetconnect-db.up.railway.app/api/register', { email, password });
+      console.log("inside here")
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      const response = await axios.post(`${backendUrl}/api/register`, { email, password });
       console.log(response.data); // Log response from the backend
       await createUserWithEmailAndPassword(auth, email, password);
       navigate('/verify'); // Redirect to the profile page on success
