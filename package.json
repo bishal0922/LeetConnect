@@ -22,8 +22,5 @@
   "homepage": "https://github.com/bishal0922/LeetConnect#readme",
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "dependencies": {
-    "react-router-dom": "^6.22.3"
   }
 }
