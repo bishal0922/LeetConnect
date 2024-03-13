@@ -23,8 +23,16 @@ day 1:
   - when verify button is clicked then the backend scrapes the bio and checks if the token is there
 - connect mongodb
   - create model for "User", updated with leetcode profile, 
-- 
 
+day2:
+- provide snackbar for succesful leetcode integration
+- host express server on heroku
+- host react app on netlify
+
+- improve the profile page, 
+- add a feed page, 
+  - user is able to post feed
+  - 
 
 `npm start` at the root of the project to start the server
 `localhost:3001` server will be running on this port

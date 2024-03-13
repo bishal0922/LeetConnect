@@ -37,9 +37,7 @@ const userSchema = new mongoose.Schema({
     company: String,
     school: String,
     skillTags: [String],
-    about: String,
-
-    // Add other fields as necessary
+    about: String
 });
 
 module.exports = mongoose.model('User', userSchema);
