@@ -53,6 +53,7 @@ const ProfileDetails = ({ profile }) => {
       )}
 
       {/* Skills Section */}
+      {profile.skillTags && profile.skillTags.length > 0 && (
       <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <Typography variant="h6">Skills</Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 0.5 }}>
@@ -61,6 +62,16 @@ const ProfileDetails = ({ profile }) => {
           ))}
         </Box>
       </Box>
+)}
+
+
+      {/* Problems Solved Section */}
+      {profile.problemsSolved && (
+        <Paper elevation={3} sx={{ mt: 2, p: 2, width: '100%' }}>
+          <Typography variant="h6">Problems Solved</Typography>
+          <Typography variant="body1">{profile.problemsSolved}</Typography>
+        </Paper>
+      )}
 
       {/* Social Links */}
       <Grid container spacing={2} sx={{ mt: 2, justifyContent: 'center' }}>
@@ -104,6 +115,7 @@ ProfileDetails.propTypes = {
     twitter: PropTypes.string,
     linkedIN: PropTypes.string,
     website: PropTypes.arrayOf(PropTypes.string),
+    problemsSolved: PropTypes.string,
   }).isRequired,
 };
 export default ProfileDetails;

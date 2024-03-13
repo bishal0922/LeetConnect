@@ -9,7 +9,7 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {;
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         console.log("Current user:", currentUser.email)
         fetchUserProfile(currentUser.email);
@@ -26,7 +26,22 @@ const Profile = () => {
         params: { email }
       });
       if (response.data.success && response.data.user) { // Check if your backend sends a success flag and user data
-        setProfile(response.data.user);
+        const user = response.data.user;
+        // Assuming leetCodeUsername is part of the user's profile information
+        const leetCodeUsername = user.leetCodeUsername;
+        const leetCodeResponse = await axios.get(`https://alfa-leetcode-api.onrender.com/${leetCodeUsername}/solved`);
+        console.log(leetCodeResponse.data)
+        console.log(leetCodeResponse.data.solvedProblem)
+        const problemsSolved = leetCodeResponse.data.solvedProblem; // Adjust based on the actual response structure
+
+  
+        // Add the number of problems solved to the user profile object
+        const userProfile = {
+          ...user,
+          problemsSolved
+        };
+  
+        setProfile(userProfile);
       } else {
         // Handle scenario where fetch is successful but user data isn't found or another issue occurred
         console.log('Fetch successful but no profile data:', response.data.message);
