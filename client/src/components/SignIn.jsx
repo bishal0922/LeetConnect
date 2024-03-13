@@ -42,7 +42,7 @@ const SignIn = () => {
     }
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      const userDoc = await axios.get(`http://localhost:3001/api/user-data?email=${email}`);
+      const userDoc = await axios.get(`https://leetconnect-db.up.railway.app/api/user-data?email=${email}`);
       console.log(userDoc.data); // Log response from the backend
       if (userDoc.data && userDoc.data.user.isVerified) {
         navigate('/profile'); // If already verified, redirect to the profile page

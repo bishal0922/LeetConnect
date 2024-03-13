@@ -41,7 +41,7 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3001/api/register', { email, password });
+      const response = await axios.post('https://leetconnect-db.up.railway.app/api/register', { email, password });
       console.log(response.data); // Log response from the backend
       await createUserWithEmailAndPassword(auth, email, password);
       navigate('/verify'); // Redirect to the profile page on success

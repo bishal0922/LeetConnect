@@ -21,7 +21,7 @@ const Profile = () => {
 
   const fetchUserProfile = async (email) => {
     try {
-      const response = await axios.get('http://localhost:3001/api/user-data', {
+      const response = await axios.get('https://leetconnect-db.up.railway.app/api/user-data', {
         params: { email }
       });
       if (response.data.success && response.data.user) { // Check if your backend sends a success flag and user data

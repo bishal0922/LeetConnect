@@ -26,7 +26,7 @@ const Verify = () => {
   const fetchUserToken =  async (email) => {
     try {
         // Make a GET request to the backend to fetch the user token
-        const response = await axios.get('http://localhost:3001/user/get-user-token', {
+        const response = await axios.get('https://leetconnect-db.up.railway.app/user/get-user-token', {
           params: { email }
         });
     
@@ -60,7 +60,7 @@ const Verify = () => {
 
   const handleVerify = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/user/verify-token',{
+      const response = await axios.post('https://leetconnect-db.up.railway.app/user/verify-token',{
         email: user.email,
         token: token, // Replace 'token value' with the actual token value
         leetCodeUsername: leetCodeUsername // Make sure leetCodeUsername state is properly set
