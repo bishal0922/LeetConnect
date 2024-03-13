@@ -19,8 +19,11 @@ day 1:
 - redirect to profile page after sign in success
   - within the proifile page, implement a way to connect users with their leetcode profile
   - currently thinking about having user paste in a unique code to their bio on leetcode, and then we can scrape the bio to get the code and then link the user to their leetcode profile
+  - so when link-leetcode-account button is pressed, user is prompted to enter "token" into leetcode bio (prompt window)
+  - when verify button is clicked then the backend scrapes the bio and checks if the token is there
 - connect mongodb
-  - create model for "User"
+  - create model for "User", updated with leetcode profile, 
+- 
 
 
 `npm start` at the root of the project to start the server

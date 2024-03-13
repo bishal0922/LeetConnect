@@ -1,67 +1,49 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase-config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Container, Typography, TextField, Button, Box, Snackbar, Alert } from '@mui/material';
+import axios from 'axios';
+import { Container } from '@mui/material';
+import ProfileDetails from './ProfileDetails'; // Make sure the import path matches where you saved the component
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [leetCodeUsername, setLeetCodeUsername] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    onAuthStateChanged(auth, setUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {;
+      if (currentUser) {
+        console.log("Current user:", currentUser.email)
+        fetchUserProfile(currentUser.email);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const linkLeetCodeAccount = () => {
-    // Placeholder for your account linking logic
-    console.log(leetCodeUsername);
-    // Here, add the actual logic to link to LeetCode
-
-    // ACTUAL LOGIC TO LINK TO LEETCODE GOES HERE
-    
-
-
-    // For demonstration, assuming success:
-    setSnackbarMessage('LeetCode account linked successfully!');
-    setSnackbarSeverity('success');
-    setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
+  const fetchUserProfile = async (email) => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/user-data', {
+        params: { email }
+      });
+      if (response.data.success && response.data.user) { // Check if your backend sends a success flag and user data
+        setProfile(response.data.user);
+      } else {
+        // Handle scenario where fetch is successful but user data isn't found or another issue occurred
+        console.log('Fetch successful but no profile data:', response.data.message);
+        setProfile(null); // Or keep the existing profile state, depending on your needs
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
     }
-    setOpenSnackbar(false);
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container>
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Profile
-        </Typography>
-        <Typography>Email: {user.email}</Typography>
-        <TextField
-          label="LeetCode Username"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={leetCodeUsername}
-          onChange={(e) => setLeetCodeUsername(e.target.value)}
-        />
-        <Button variant="contained" color="primary" onClick={linkLeetCodeAccount} sx={{ mt: 2 }}>
-          Link LeetCode Account
-        </Button>
-      </Box>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      {/* Pass the fetched profile data as a prop to ProfileDetails */}
+      <ProfileDetails profile={profile} />
     </Container>
   );
 };
