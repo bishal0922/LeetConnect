@@ -3,6 +3,9 @@ node_modules/
 client/node_modules/
 server/node_modules/
 
+# Firebase private key
+server/leetconnect-8fad9-firebase-adminsdk-l337z-679d99d554.json
+
 # Environment configuration files
 .env
 .env.local
