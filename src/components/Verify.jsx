@@ -62,7 +62,7 @@ const Verify = () => {
   const handleVerify = async () => {
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
-      const response = await axios.post(`${backendUrl}/user/verify-token1`,{
+      const response = await axios.post(`${backendUrl}/user/verify-token`,{
         email: user.email,
         token: token, // Replace 'token value' with the actual token value
         leetCodeUsername: leetCodeUsername // Make sure leetCodeUsername state is properly set
