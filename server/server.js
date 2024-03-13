@@ -4,7 +4,6 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const admin = require('./firebase-admin-init');
 const connectDB = require('./db');
 const authRoutes = require('./routes/authRoutes');
 
@@ -72,24 +71,6 @@ app.post('/verify-token', async (req, res) => {
   }
 });
 
-
-// Secure route example
-app.post('/some-secure-route', async (req, res) => {
-  const idToken = req.header('Authorization')?.replace('Bearer ', '');
-  
-  if (!idToken) {
-    return res.status(401).send('No token provided');
-  }
-
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const uid = decodedToken.uid;
-    // Proceed with the user's request...
-    res.send(`Request authorized for user ID: ${uid}`);
-  } catch (error) {
-    res.status(401).send('You are not authorized');
-  }
-});
 
 
 // Home route
