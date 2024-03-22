@@ -1,39 +1,39 @@
-import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase-config';
-import { TextField, Button, Container, Typography, Box, FormHelperText } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
   // Helper function to validate email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.');
+      setEmailError("Please enter a valid email address.");
       return false;
     }
-    setEmailError('');
+    setEmailError("");
     return true;
   };
 
   // Helper function to validate password
   const validatePassword = (password) => {
     if (password.length < 8) {
-      setPasswordError('Password must be at least 8 characters long.');
+      setPasswordError("Password must be at least 8 characters long.");
       return false;
     }
-    setPasswordError('');
+    setPasswordError("");
     return true;
   };
 
-  const signIn = async (e) => {
+  const signUp = async (e) => {
     e.preventDefault();
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -41,18 +41,19 @@ const SignIn = () => {
       return;
     }
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      console.log("inside here");
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
-      const userDoc = await axios.get(`${backendUrl}/api/user-data?email=${email}`);
-      console.log(userDoc.data); // Log response from the backend
-      if (userDoc.data && userDoc.data.user.isVerified) {
-        navigate('/profile'); // If already verified, redirect to the profile page
-      } else {
-        navigate('/verify'); // If not verified, redirect to the verification page
-      }
+      const response = await axios.post(`${backendUrl}/api/register`, {
+        email,
+        password,
+      });
+      console.log(response.data); // Log response from the backend
+      await createUserWithEmailAndPassword(auth, email, password);
+      navigate("/verify"); // Redirect to the profile page on success
     } catch (error) {
-      console.error('Error signing in:', error);
-      setPasswordError('Failed to sign in. Please check your credentials.');
+      console.error("Error signing up:", error.message);
+      // Here you could set a more specific error based on error.message or error.code
+      setEmailError("Failed to sign up. Please try again.");
     }
   };
 
@@ -61,15 +62,15 @@ const SignIn = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={signIn} sx={{ mt: 1, width: '100%' }}>
+        <Box component="form" noValidate onSubmit={signUp} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -98,14 +99,13 @@ const SignIn = () => {
             error={!!passwordError}
             helperText={passwordError}
           />
-          <FormHelperText error>{passwordError}</FormHelperText>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
         </Box>
       </Box>
@@ -113,4 +113,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
