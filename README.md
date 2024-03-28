@@ -1,5 +1,13 @@
 # LeetConnect
 
+`npm install` at the root of the project then
+`npm start`
+`localhost` will be running
+
+also to run server
+- clone the server repo `git clone https://github.com/bishal0922/Leetconnect-backend`
+- and run `npm install` and `npm start` to run the server which will be running on `localhost:3001`
+
 Todo:
 
 - [ ] mvp
@@ -38,6 +46,4 @@ day2:
   - user is able to post feed
   -
 
-`npm install` at the root of the project then
-`npm start`
-`localhost` server will be running on localhost
+
